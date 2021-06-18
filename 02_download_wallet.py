@@ -8,12 +8,13 @@ import requests
 
 #Start Atom and set object values
 atom = Atom()
-walletID = "mynima.gm"
+walletID = ""
+FolderPath = ""
 date = datetime.today().strftime('%Y-%m-%d')
-exclude_list = ["DOKI DOKI PUNKS","Key Moment 4 Creation"]
+exclude_list = []
 
 #Get output folder setup
-newpath = f"C:/Users/ipsan/Downloads/{walletID}/{date}"
+newpath = f"{FolderPath}{walletID}/{date}"
 if not os.path.exists(newpath):
     os.makedirs(newpath)
 
@@ -26,9 +27,13 @@ for a in assets:
     name = asset.name
     image = asset.image
     response = requests.get(image)
+    if asset.name.upper().find("CREATION") > 0 or asset.name.upper().find("ANIMATE") > 0:
+        ext = "gif"
+    else:
+        ext = "png"
     if name not in exclude_list:
         exclude_list.append(str(name))
-        file = open(f"{newpath}/{name}.png", "wb")
+        file = open(f"{newpath}/{name}.{ext}", "wb")
         file.write(response.content)
         file.close()
         time.sleep(0.4)

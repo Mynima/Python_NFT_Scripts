@@ -59,13 +59,13 @@ async def on_message(message):
         details.clear()
         # details.append(f"Wallet    : {wallet_address}")   #Address
         details.append(f"**Asset name:** {name}")             #Name
-        details.append(f"**Collection:** {collection}")       #Collection
+        #details.append(f"**Collection:** {collection}")       #Collection
         details.append(f"**Schema:** {schema}")           #Schema
         details.append(f"**Mint** #{mint_num} **of** {mint_minted} (**Max Supply:** {mint_max})") #Mint Number
         
         await channel.send(details[0])
         await channel.send(details[1])
         await channel.send(details[2])
-        await channel.send(details[3])
+        #await channel.send(details[3])
         await channel.send(asset_image)
 bot.run(TOKEN)
