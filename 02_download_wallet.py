@@ -8,10 +8,11 @@ import requests
 
 #Start Atom and set object values
 atom = Atom()
-walletID = ""
-FolderPath = ""
+walletID = ""       #Add wallet address here
+FolderPath = ""     #Add folder pathwat here (note that "/" should be used not "\")
+exclude_list = []   #Add comma sparated "" list of any items you don't want to download
+gif_list = []       #Add known animated NFTs as comma sparated "" list here
 date = datetime.today().strftime('%Y-%m-%d')
-exclude_list = []
 
 #Get output folder setup
 newpath = f"{FolderPath}{walletID}/{date}"
@@ -27,18 +28,17 @@ for a in assets:
     name = asset.name
     image = asset.image
     response = requests.get(image)
-    if asset.name.upper().find("CREATION") > 0 or asset.name.upper().find("ANIMATE") > 0 or asset.image.upper().find(".GIF") > 0:
+    #Some handling of animated/gif files, needs to be updated to include more robust methodology
+    if asset.name.upper().find("CREATION") > 0 or asset.name.upper().find("ANIMATE") > 0 or asset.image.upper().find(".GIF") > 0 or name in gif_list:
         ext = "gif"
     else:
         ext = "png"
-    print(name)
-    print(image)
-    print(ext)
     if name not in exclude_list:
         exclude_list.append(str(name))
         file = open(f"{newpath}/{name}.{ext}", "wb")
         file.write(response.content)
         file.close()
+        #Time delay added to help prevent API from failing with too many requests at once. 
         time.sleep(0.4)
 
 print(f"All images have been downloaded from {walletID} to {newpath}. Enjoy!")
